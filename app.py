@@ -1,3 +1,4 @@
+import requests
 import os
 import time
 from datetime import datetime
@@ -92,27 +93,22 @@ def get_time_remaining():
     return max(0, int(remaining))
 
 def log_results_to_sheets():
-    max_attempts = 3
-    for attempt in range(max_attempts):
-        try:
-            conn = st.connection("gsheets", type=GSheetsConnection)
-            existing_df = conn.read(ttl=0)
-            new_entry = pd.DataFrame([{
-                "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "Team_Name": st.session_state.team_name,
-                "Player_1": st.session_state.p1_name,
-                "Player_2": st.session_state.p2_name,
-                "Final_Score": st.session_state.score,
-                "Time_Taken_Sec": int(time.time() - st.session_state.start_time)
-            }])
-            updated_df = pd.concat([existing_df, new_entry], ignore_index=True)
-            conn.update(data=updated_df)
-            return True
-        except Exception as e:
-            time.sleep(1.5)  # Backoff to handle 200 concurrent writes smoothly
-            continue
-    return False
-
+    url = "https://script.google.com/macros/s/AKfycbwLnXW4LZfjLfxiMA7RCnRxEikOlN6yiV12PXHN5w1y0Fk43AH8h0qOxlanVg2sJzzD/exec"
+    
+    payload = {
+        "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "Team_Name": st.session_state.team_name,
+        "Player_1": st.session_state.p1_name,
+        "Player_2": st.session_state.p2_name,
+        "Final_Score": st.session_state.score,
+        "Time_Taken_Sec": int(time.time() - st.session_state.start_time)
+    }
+    
+    try:
+        requests.post(url, json=payload, timeout=10)
+        return True
+    except Exception:
+        return False
 # ----------------- UI SCREEN: REGISTRATION -----------------
 if not st.session_state.started:
     st.title("⚡ Duo Riddle & Puzzle Arena")
