@@ -128,7 +128,7 @@ if not st.session_state.started:
     st.info("⏱️ **Round Duration:** 40 Minutes | 3 Sets | Solve on 1 mobile per duo.")
     
     t_name = st.text_input("Duo / Team Name:")
-  col1, col2 = st.columns(2)
+    col1, col2 = st.columns(2)
     
     with col1:
         p1 = st.text_input("Player 1 Name:")
