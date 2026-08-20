@@ -82,7 +82,9 @@ if "started" not in st.session_state:
     st.session_state.started = False
     st.session_state.team_name = ""
     st.session_state.p1_name = ""
+    st.session_state.contact_no1 = ""
     st.session_state.p2_name = ""
+    st.session_state.contact_no2 = ""
     st.session_state.start_time = 0
     st.session_state.current_set_idx = 0
     st.session_state.stage = "riddles"
@@ -109,7 +111,9 @@ def log_results_to_sheets():
         "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "Team_Name": st.session_state.team_name,
         "Player_1": st.session_state.p1_name,
+        "Contact No.": st.session_state.contact_no1,
         "Player_2": st.session_state.p2_name,
+        "Contact No.": st.session_state.contact_no2,
         "Final_Score": st.session_state.score,
         "Time_Taken_Sec": int(time.time() - st.session_state.start_time)
     }
