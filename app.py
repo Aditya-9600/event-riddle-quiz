@@ -149,7 +149,8 @@ if not st.session_state.started:
             st.session_state.started = True
             st.rerun()
         else:
-            st.warning("Please fill in Team Name, Player Names, and Contact Numbers.")    st.stop()
+            st.warning("Please fill in Team Name, Player Names, and Contact Numbers.")    
+            st.stop()
 
 # ----------------- LIVE JAVASCRIPT TIMER -----------------
 time_left = get_time_remaining()
