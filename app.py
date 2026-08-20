@@ -106,8 +106,7 @@ def get_time_remaining():
 
 def log_results_to_sheets():
     url = "https://script.google.com/macros/s/AKfycbwLnXW4LZfjLfxiMA7RCnRxEikOlN6yiV12PXHN5w1y0Fk43AH8h0qOxlanVg2sJzzD/exec"
-    
-   payload = {
+    payload = {
         "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "Team_Name": st.session_state.team_name,
         "Player_1": st.session_state.p1_name,
@@ -116,7 +115,7 @@ def log_results_to_sheets():
         "P2_Contact": st.session_state.p2_contact, 
         "Final_Score": st.session_state.score,
         "Time_Taken_Sec": int(time.time() - st.session_state.start_time)
-    }
+       }
     
     try:
         requests.post(url, json=payload, timeout=10)
