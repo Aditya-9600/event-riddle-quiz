@@ -5,7 +5,6 @@ from datetime import datetime
 import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
-from streamlit_gsheets import GSheetsConnection
 
 # ----------------- CONFIGURATION & STYLING -----------------
 st.set_page_config(page_title="Riddle Quest Arena", page_icon="⚡", layout="centered")
@@ -15,6 +14,17 @@ st.markdown("""
     .stButton>button { width: 100%; border-radius: 8px; font-weight: bold; }
 </style>
 """, unsafe_allow_html=True)
+
+
+hide_menu_style = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+    .viewerBadge_container__1QSob {display: none !important;}
+    </style>
+"""
+st.markdown(hide_menu_style, unsafe_allow_html=True)
 
 # ----------------- GAME DATA -----------------
 SETS = [
