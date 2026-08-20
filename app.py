@@ -16,16 +16,16 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-hide_menu_style = """
+hide_elements = """
     <style>
     #MainMenu {visibility: hidden;}
-    header {visibility: hidden;}
     footer {visibility: hidden;}
-    .viewerBadge_container__1QSob {display: none !important;}
+    header {visibility: hidden !important;}
+    [data-testid="stHeader"] {display: none !important;}
+    [data-testid="stToolbar"] {display: none !important;}
     </style>
 """
-st.markdown(hide_menu_style, unsafe_allow_html=True)
-
+st.markdown(hide_elements, unsafe_allow_html=True)
 # ----------------- GAME DATA -----------------
 SETS = [
     {
@@ -83,6 +83,8 @@ if "started" not in st.session_state:
     st.session_state.team_name = ""
     st.session_state.p1_name = ""
     st.session_state.p2_name = ""
+    st.session_state.p1_contact = ""
+    st.session_state.p2_contact = ""
     st.session_state.start_time = 0
     st.session_state.current_set_idx = 0
     st.session_state.stage = "riddles"
