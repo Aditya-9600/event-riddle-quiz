@@ -82,9 +82,7 @@ if "started" not in st.session_state:
     st.session_state.started = False
     st.session_state.team_name = ""
     st.session_state.p1_name = ""
-    st.session_state.contact_no1 = ""
     st.session_state.p2_name = ""
-    st.session_state.contact_no2 = ""
     st.session_state.start_time = 0
     st.session_state.current_set_idx = 0
     st.session_state.stage = "riddles"
@@ -107,13 +105,13 @@ def get_time_remaining():
 def log_results_to_sheets():
     url = "https://script.google.com/macros/s/AKfycbwLnXW4LZfjLfxiMA7RCnRxEikOlN6yiV12PXHN5w1y0Fk43AH8h0qOxlanVg2sJzzD/exec"
     
-    payload = {
+   payload = {
         "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "Team_Name": st.session_state.team_name,
         "Player_1": st.session_state.p1_name,
-        "Contact No.": st.session_state.contact_no1,
+        "P1_Contact": st.session_state.p1_contact, 
         "Player_2": st.session_state.p2_name,
-        "Contact No.": st.session_state.contact_no2,
+        "P2_Contact": st.session_state.p2_contact, 
         "Final_Score": st.session_state.score,
         "Time_Taken_Sec": int(time.time() - st.session_state.start_time)
     }
@@ -129,21 +127,28 @@ if not st.session_state.started:
     st.info("⏱️ **Round Duration:** 40 Minutes | 3 Sets | Solve on 1 mobile per duo.")
     
     t_name = st.text_input("Duo / Team Name:")
-    col1, col2 = st.columns(2)
-    p1 = col1.text_input("Player 1 Name:")
-    p2 = col2.text_input("Player 2 Name:")
+  col1, col2 = st.columns(2)
     
+    with col1:
+        p1 = st.text_input("Player 1 Name:")
+        p1_contact = st.text_input("Player 1 Contact Number:")
+        
+    with col2:
+        p2 = st.text_input("Player 2 Name:")
+        p2_contact = st.text_input("Player 2 Contact Number:")
+
     if st.button("🚀 Enter & Start Timer"):
-        if t_name.strip() and p1.strip() and p2.strip():
+        if t_name.strip() and p1.strip() and p2.strip() and p1_contact.strip() and p2_contact.strip():
             st.session_state.team_name = t_name.strip()
             st.session_state.p1_name = p1.strip()
+            st.session_state.p1_contact = p1_contact.strip()
             st.session_state.p2_name = p2.strip()
+            st.session_state.p2_contact = p2_contact.strip()
             st.session_state.start_time = time.time()
             st.session_state.started = True
             st.rerun()
         else:
-            st.warning("Please fill in Team Name and both Player Names.")
-    st.stop()
+            st.warning("Please fill in Team Name, Player Names, and Contact Numbers.")    st.stop()
 
 # ----------------- LIVE JAVASCRIPT TIMER -----------------
 time_left = get_time_remaining()
