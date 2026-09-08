@@ -319,18 +319,38 @@ elif st.session_state.stage == "set_complete":
             }
             st.rerun()
     else:
-        if st.button("🏁 Finish Event"):
-            st.session_state.stage = "finished"
+        if st.button("🔒 Enter Final Chamber"):
+            st.session_state.stage = "final_code_entry"
             st.rerun()
 
-# 7. ELIMINATED
+#7 . FINAL CODE ENTRY(ONLY IF THEY PASSED ALL SETS)
+elif st.session_state.stage == "final_code_entry":
+    st.subheader("🗝️ The Master Code")
+    st.info("You have successfully collected all 3 secret codes from the sets. Combine them together to unlock the final submission.")
+    
+    master_input = st.text_input("Enter the combined Master Code:")
+    
+    if st.button("Submit Final Log"):
+        # Combine all secret codes to check the answer (e.g., "TENYEARCYCLE")
+        correct_master_code = "".join([s["secret_code"].lower() for s in SETS])
+        
+        # Clean user input (remove spaces, make lowercase)
+        user_clean = master_input.strip().replace(" ", "").lower()
+        
+        if user_clean == correct_master_code:
+            st.session_state.stage = "finished"
+            st.rerun()
+        else:
+            st.error("❌ Incorrect Master Code. Please check the codes you received and try again.")
+
+# 8. ELIMINATED
 elif st.session_state.stage == "eliminated":
     st.error("❌ Your team has been eliminated from this round.")
     if st.button("Submit Final Log"):
         st.session_state.stage = "finished"
         st.rerun()
 
-# 8. FINISHED & SYNC (SCORES HIDDEN)
+# 9. FINISHED & SYNC (SCORES HIDDEN)
 elif st.session_state.stage == "finished":
     st.subheader("🏁 Event Concluded")
     st.write(f"Team **{st.session_state.team_name}**, your results have been securely transmitted to the evaluation desk.")
