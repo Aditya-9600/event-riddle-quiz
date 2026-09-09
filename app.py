@@ -6,9 +6,9 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 # ----------------- CONFIGURATION & STYLING -----------------
-st.set_page_config(page_title="Riddle Quest Arena", page_icon="⚡", layout="centered")
+st.set_page_config(page_title="Riddle Quest Arena", page_icon="🔥", layout="centered")
 
-# Upgraded Explosive High-Voltage CSS
+# Steady "Bomb Defusal" Amber & Crimson CSS
 electric_css = """
     <style>
     /* Hide Default Streamlit Elements */
@@ -18,19 +18,18 @@ electric_css = """
     [data-testid="stHeader"] {display: none !important;}
     [data-testid="stToolbar"] {display: none !important;}
 
-    /* Dynamic Grid Background with Lightning Flashes */
+    /* Static Dark Grid Background */
     .stApp {
-        background-color: #02040a;
+        background-color: #0a0500;
         background-image: 
-            linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+            linear-gradient(rgba(255, 85, 0, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 85, 0, 0.05) 1px, transparent 1px);
         background-size: 40px 40px;
-        animation: lightning-storm 10s infinite;
-        color: #e0f7fa;
+        color: #ffead9;
         overflow-x: hidden;
     }
 
-    /* Ambient Sparks (Bombspot Effect) floating in background */
+    /* Slow, smooth drifting embers (No flashing) */
     .stApp::before {
         content: "";
         position: fixed;
@@ -39,108 +38,76 @@ electric_css = """
         pointer-events: none;
         z-index: 0;
         box-shadow: 
-            20vw 10vh 2px 1px #0ff, 40vw 30vh 3px 2px #fff, 
-            60vw 50vh 1px 1px #0ff, 80vw 70vh 4px 1px #fffb00,
-            10vw 80vh 2px 2px #0ff, 90vw 20vh 3px 1px #fff;
-        animation: floating-sparks 4s infinite linear alternate;
+            20vw 10vh 3px 1px #ff5500, 40vw 30vh 4px 2px #ff2200, 
+            60vw 50vh 2px 1px #ffaa00, 80vw 70vh 5px 1px #ff5500,
+            10vw 80vh 3px 2px #ff2200, 90vw 20vh 4px 1px #ffaa00;
+        animation: drifting-embers 20s infinite linear;
     }
 
-    /* Neon Flickering Headers */
+    /* Steady Glowing Headers */
     h1, h2, h3 {
         color: #ffffff !important;
-        text-shadow: 0 0 5px #fff, 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #0077ff;
-        animation: electric-flicker 1.5s infinite alternate;
+        text-shadow: 0 0 5px #ff5500, 0 0 15px #ff2200;
         text-align: center;
         z-index: 1;
         position: relative;
     }
 
-    /* Glowing Text Inputs */
+    /* Amber Text Inputs */
     input {
         border-radius: 4px !important;
-        border: 1px solid #005f73 !important;
-        background-color: rgba(2, 10, 20, 0.9) !important;
-        color: #00ffff !important;
-        box-shadow: 0 0 10px rgba(0, 255, 255, 0.2) !important;
+        border: 1px solid #993300 !important;
+        background-color: rgba(20, 5, 0, 0.9) !important;
+        color: #ffaa00 !important;
+        box-shadow: 0 0 8px rgba(255, 85, 0, 0.2) !important;
         font-family: 'Courier New', Courier, monospace !important;
         font-weight: bold !important;
         z-index: 1;
         position: relative;
     }
     input:focus {
-        border: 2px solid #fffb00 !important;
-        box-shadow: 0 0 25px rgba(255, 251, 0, 0.8), inset 0 0 10px rgba(255, 251, 0, 0.5) !important;
+        border: 2px solid #ffaa00 !important;
+        box-shadow: 0 0 15px rgba(255, 170, 0, 0.6) !important;
         outline: none !important;
     }
 
-    /* Explosive Pushbuttons */
+    /* Crimson/Orange Pushbuttons */
     .stButton > button {
         width: 100%; 
         border-radius: 4px; 
         font-weight: 900;
         letter-spacing: 2px;
-        background: linear-gradient(45deg, #001f3f, #005f73) !important;
-        color: #00ffff !important;
-        border: 2px solid #00ffff !important;
-        box-shadow: 0 0 15px rgba(0, 255, 255, 0.5), inset 0 0 10px rgba(0, 255, 255, 0.3) !important;
-        transition: all 0.1s ease-in-out !important;
-        position: relative;
-        overflow: hidden;
+        background: linear-gradient(45deg, #330000, #801a00) !important;
+        color: #ffaa00 !important;
+        border: 2px solid #ff5500 !important;
+        box-shadow: 0 0 10px rgba(255, 85, 0, 0.4) !important;
+        transition: all 0.2s ease-in-out !important;
         z-index: 1;
-    }
-    .stButton > button::after {
-        content: "";
-        position: absolute;
-        top: 50%; left: 50%;
-        width: 10px; height: 10px;
-        background: #fffb00;
-        opacity: 0;
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        box-shadow: 0 0 30px 20px #fffb00, 0 0 50px 30px #00ffff;
-        transition: all 0.3s ease-out;
-    }
-    .stButton > button:hover::after {
-        opacity: 0.8;
-        transform: translate(-50%, -50%) scale(20);
-        transition: 0.2s;
+        position: relative;
     }
     .stButton > button:hover {
-        color: #000 !important;
-        border: 2px solid #fff !important;
-        box-shadow: 0 0 40px #00ffff, 0 0 60px #fffb00 !important;
+        background: linear-gradient(45deg, #4d0000, #b32400) !important;
+        color: #ffffff !important;
+        border: 2px solid #ffaa00 !important;
+        box-shadow: 0 0 20px #ff5500 !important;
+        transform: scale(1.01);
     }
 
-    /* Explosive Plasma Arc Divider */
+    /* Steady Plasma Divider */
     .plasma-divider {
-        height: 4px;
+        height: 3px;
         width: 100%;
-        background: #fff;
-        box-shadow: 0 0 10px #fff, 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #0077ff;
+        background: #ffaa00;
+        box-shadow: 0 0 10px #ffaa00, 0 0 20px #ff5500;
         margin: 25px 0;
         border-radius: 50%;
-        animation: arc-explode 0.8s infinite alternate;
     }
 
-    /* Keyframe Animations */
-    @keyframes lightning-storm {
-        0%, 95%, 98%, 100% { background-color: #02040a; }
-        96% { background-color: rgba(0, 255, 255, 0.2); }
-        97% { background-color: #02040a; }
-        99% { background-color: rgba(255, 255, 255, 0.3); }
-    }
-    @keyframes floating-sparks {
-        0% { transform: translateY(0) rotate(0deg); opacity: 0.5; }
-        50% { opacity: 1; box-shadow: 22vw 8vh 3px 2px #fff, 38vw 32vh 4px 3px #0ff, 62vw 48vh 2px 1px #fff, 78vw 72vh 5px 2px #0ff, 12vw 78vh 3px 2px #fff, 88vw 22vh 4px 2px #0ff; }
-        100% { transform: translateY(-50px) rotate(5deg); opacity: 0; }
-    }
-    @keyframes electric-flicker {
-        0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
-        20%, 24%, 55% { opacity: 0.3; text-shadow: none; }
-    }
-    @keyframes arc-explode {
-        0% { transform: scaleX(0.9); opacity: 0.7; filter: hue-rotate(0deg); }
-        100% { transform: scaleX(1.05); opacity: 1; filter: hue-rotate(45deg); }
+    /* Slow Drift Animation */
+    @keyframes drifting-embers {
+        0% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+        50% { opacity: 0.8; box-shadow: 22vw 8vh 3px 2px #ffaa00, 38vw 32vh 4px 3px #ff2200, 62vw 48vh 2px 1px #ff5500, 78vw 72vh 5px 2px #ffaa00, 12vw 78vh 3px 2px #ff5500, 88vw 22vh 4px 2px #ff2200; }
+        100% { transform: translateY(-100px) rotate(2deg); opacity: 0.6; }
     }
     </style>
 """
@@ -248,9 +215,9 @@ def log_results_to_sheets():
 
 # ----------------- UI SCREEN: REGISTRATION -----------------
 if not st.session_state.started:
-    st.title("⚡ Duo Riddle & Puzzle Arena")
+    st.title("🔥 Duo Riddle & Puzzle Arena")
     electric_line()
-    st.info("⏱️ **Circuit Duration:** 40 Minutes | 3 Sets | Solve on 1 mobile per duo.")
+    st.info("⏱️ **Mission Duration:** 40 Minutes | 3 Sets | Solve on 1 mobile per duo.")
     
     t_name = st.text_input("Duo / Team Name:")
     col1, col2 = st.columns(2)
@@ -263,7 +230,7 @@ if not st.session_state.started:
         p2 = st.text_input("Player 2 Name:")
         p2_contact = st.text_input("Player 2 Contact Number:")
 
-    if st.button("🔌 IGNITE CIRCUIT & START TIMERS"):
+    if st.button("🔥 ARM SYSTEM & START TIMER"):
         if t_name.strip() and p1.strip() and p2.strip() and p1_contact.strip() and p2_contact.strip():
             st.session_state.team_name = t_name.strip()
             st.session_state.p1_name = p1.strip()
@@ -274,7 +241,7 @@ if not st.session_state.started:
             st.session_state.started = True
             st.rerun()
         else:
-            st.warning("⚠️ INCOMPLETE CIRCUIT: Please fill in Team Name, Player Names, and Contact Numbers.")    
+            st.warning("⚠️ MISSING DATA: Please fill in Team Name, Player Names, and Contact Numbers.")    
     st.stop()
 
 # ----------------- LIVE JAVASCRIPT TIMER -----------------
@@ -286,8 +253,8 @@ if time_left == 0 and st.session_state.stage != "finished":
 if st.session_state.stage != "finished":
     end_time_ms = (st.session_state.start_time + (TOTAL_GAME_MINUTES * 60)) * 1000
     live_timer_html = f"""
-    <div style="background: rgba(0, 10, 20, 0.95); color: #fff; padding: 15px; border: 3px solid #00ffff; border-radius: 4px; text-align: center; font-size: 2.5rem; font-weight: 900; font-family: 'Courier New', monospace; box-shadow: 0 0 30px #00ffff, inset 0 0 20px #00ffff; margin-bottom: 5px; text-shadow: 0 0 10px #00ffff, 0 0 20px #fff;">
-        ⚡ <span id="clock">--:--</span> ⚡
+    <div style="background: rgba(20, 5, 0, 0.95); color: #ffaa00; padding: 15px; border: 2px solid #ff5500; border-radius: 4px; text-align: center; font-size: 2.5rem; font-weight: 900; font-family: 'Courier New', monospace; box-shadow: 0 0 20px rgba(255, 85, 0, 0.5); margin-bottom: 5px;">
+        ⏳ <span id="clock">--:--</span> ⏳
     </div>
     <script>
         var countDownDate = {end_time_ms};
@@ -296,9 +263,8 @@ if st.session_state.stage != "finished":
             var distance = countDownDate - now;
             if (distance < 0) {{
                 clearInterval(x);
-                document.getElementById("clock").innerHTML = "CORE DEPLETED";
-                document.getElementById("clock").style.color = "#ff0044";
-                document.getElementById("clock").style.textShadow = "0 0 20px #ff0044";
+                document.getElementById("clock").innerHTML = "DETONATED";
+                document.getElementById("clock").style.color = "#ff0000";
             }} else {{
                 var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -309,7 +275,7 @@ if st.session_state.stage != "finished":
     </script>
     """
     components.html(live_timer_html, height=110)
-    st.caption(f"📡 Telemetry Active: **{st.session_state.team_name}** ({st.session_state.p1_name} & {st.session_state.p2_name})")
+    st.caption(f"📡 Tracking Team: **{st.session_state.team_name}** ({st.session_state.p1_name} & {st.session_state.p2_name})")
     electric_line()
 
 # ----------------- GAME LOOP -----------------
@@ -329,7 +295,7 @@ if st.session_state.stage == "riddles":
             else:
                 inputs[r["id"]] = st.text_input(r["prompt"], key=f"inp_{r['id']}")
         
-        submitted = st.form_submit_button("💥 TRANSMIT CODES 💥")
+        submitted = st.form_submit_button("🔥 TRANSMIT CODES 🔥")
         if submitted:
             for r in current_set["riddles"]:
                 r_id = r["id"]
@@ -356,13 +322,13 @@ if st.session_state.stage == "riddles":
 
 # 2. DECISION: 5/5 CORRECT
 elif st.session_state.stage == "decision_5":
-    st.success("🌟 Maximum Output! All 5 frequencies matched.")
+    st.success("🌟 Maximum Output! All 5 sequences matched.")
     st.write("Select your routing path:")
     c1, c2 = st.columns(2)
     if c1.button("➡️ BYPASS TO NEXT SET"):
         st.session_state.stage = "set_complete"
         st.rerun()
-    if c2.button("🧩 OVERCLOCK BONUS PUZZLE"):
+    if c2.button("🧩 DECODE BONUS PUZZLE"):
         s_state["puzzle_mandatory"] = False
         st.session_state.stage = "puzzle"
         st.rerun()
@@ -406,7 +372,7 @@ elif st.session_state.stage == "puzzle":
     st.markdown(current_set["puzzle"]["prompt"])
     p_ans = st.text_input("Enter Execution Code:")
     
-    if st.button("💥 EXECUTE PUZZLE LOGIC 💥"):
+    if st.button("🔥 EXECUTE PUZZLE LOGIC 🔥"):
         clean_p = p_ans.strip().lower()
         if clean_p in [a.lower() for a in current_set["puzzle"]["accepted"]]:
             st.success("✅ Firewall Bypassed Successfully!")
@@ -429,7 +395,7 @@ elif st.session_state.stage == "puzzle":
 # 6. SET COMPLETE
 elif st.session_state.stage == "set_complete":
     st.balloons()
-    st.success(f"⚡ **Grid {current_set['set_id']} Synchronized!**")
+    st.success(f"🔥 **Grid {current_set['set_id']} Synchronized!**")
     st.info(f"🔑 Encrypted Key for Set {current_set['set_id']}: **{current_set['secret_code']}**")
     
     if st.session_state.current_set_idx + 1 < len(SETS):
@@ -457,7 +423,7 @@ elif st.session_state.stage == "final_code_entry":
     
     master_input = st.text_input("Enter the Combined Override Code:")
     
-    if st.button("💥 TRANSMIT FINAL DATA LOG 💥"):
+    if st.button("🔥 TRANSMIT FINAL DATA LOG 🔥"):
         correct_master_code = "".join([s["secret_code"].lower() for s in SETS])
         user_clean = master_input.strip().replace(" ", "").lower()
         
@@ -469,8 +435,8 @@ elif st.session_state.stage == "final_code_entry":
 
 # 8. ELIMINATED
 elif st.session_state.stage == "eliminated":
-    st.error("❌ CIRCUIT OVERLOAD: Your team has been disconnected from the server.")
-    if st.button("UPLOAD PARTIAL TELEMETRY"):
+    st.error("❌ MISSION FAILED: Your team has been locked out.")
+    if st.button("UPLOAD PARTIAL LOGS"):
         st.session_state.stage = "finished"
         st.rerun()
 
@@ -478,11 +444,11 @@ elif st.session_state.stage == "eliminated":
 elif st.session_state.stage == "finished":
     st.subheader("🏁 Connection Terminated")
     electric_line()
-    st.write(f"Team **{st.session_state.team_name}**, your telemetry has been securely transmitted to the evaluation core.")
-    st.write("Please return to the main assembly area while we decode the network qualifications.")
+    st.write(f"Team **{st.session_state.team_name}**, your telemetry has been securely transmitted to headquarters.")
+    st.write("Please return to the main assembly area while we process the final results.")
     
     if not st.session_state.submitted_to_sheet:
-        with st.spinner("Encrypting and syncing logs to the mainframe..."):
+        with st.spinner("Encrypting and syncing logs..."):
             saved = log_results_to_sheets()
             if saved:
                 st.session_state.submitted_to_sheet = True
