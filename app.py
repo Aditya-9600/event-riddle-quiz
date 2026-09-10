@@ -1,6 +1,7 @@
 import requests
 import os
 import time
+import copy
 from datetime import datetime
 import streamlit as st
 import streamlit.components.v1 as components
@@ -116,6 +117,32 @@ st.markdown(electric_css, unsafe_allow_html=True)
 def electric_line():
     st.markdown('<div class="plasma-divider"></div>', unsafe_allow_html=True)
 
+# ----------------- SERVER MEMORY FOR REFRESH RESCUE -----------------
+@st.cache_resource
+def get_server_memory():
+    # This vault survives page refreshes and stores all team states
+    return {}
+
+server_memory = get_server_memory()
+
+def save_team_state():
+    # Backs up the team's exact current state to the server vault
+    if st.session_state.started:
+        team_key = f"{st.session_state.team_name.strip().lower()}_{st.session_state.p1_contact.strip()}"
+        server_memory[team_key] = {
+            "team_name": st.session_state.team_name,
+            "p1_name": st.session_state.p1_name,
+            "p2_name": st.session_state.p2_name,
+            "p1_contact": st.session_state.p1_contact,
+            "p2_contact": st.session_state.p2_contact,
+            "start_time": st.session_state.start_time,
+            "current_set_idx": st.session_state.current_set_idx,
+            "stage": st.session_state.stage,
+            "score": st.session_state.score,
+            "submitted_to_sheet": st.session_state.submitted_to_sheet,
+            "set_state": copy.deepcopy(st.session_state.set_state)
+        }
+
 # ----------------- GAME DATA -----------------
 SETS = [
     {
@@ -206,14 +233,13 @@ def log_results_to_sheets():
         "Final_Score": st.session_state.score,
         "Time_Taken_Sec": int(time.time() - st.session_state.start_time)
        }
-    
     try:
         requests.post(url, json=payload, timeout=10)
         return True
     except Exception:
         return False
 
-# ----------------- UI SCREEN: REGISTRATION -----------------
+# ----------------- UI SCREEN: REGISTRATION & RECOVERY -----------------
 if not st.session_state.started:
     st.title("🔥 Duo Riddle & Puzzle Arena")
     electric_line()
@@ -232,14 +258,30 @@ if not st.session_state.started:
 
     if st.button("🔥 ARM SYSTEM & START TIMER"):
         if t_name.strip() and p1.strip() and p2.strip() and p1_contact.strip() and p2_contact.strip():
-            st.session_state.team_name = t_name.strip()
-            st.session_state.p1_name = p1.strip()
-            st.session_state.p1_contact = p1_contact.strip()
-            st.session_state.p2_name = p2.strip()
-            st.session_state.p2_contact = p2_contact.strip()
-            st.session_state.start_time = time.time()
-            st.session_state.started = True
-            st.rerun()
+            
+            # Generate the unique vault key for this team
+            team_key = f"{t_name.strip().lower()}_{p1_contact.strip()}"
+            
+            # Check if this team is returning from a refresh
+            if team_key in server_memory:
+                restored_state = server_memory[team_key]
+                for key, value in restored_state.items():
+                    st.session_state[key] = value
+                
+                st.session_state.started = True
+                st.rerun()
+            
+            # If not, create a brand new team registration
+            else:
+                st.session_state.team_name = t_name.strip()
+                st.session_state.p1_name = p1.strip()
+                st.session_state.p1_contact = p1_contact.strip()
+                st.session_state.p2_name = p2.strip()
+                st.session_state.p2_contact = p2_contact.strip()
+                st.session_state.start_time = time.time()
+                st.session_state.started = True
+                save_team_state()
+                st.rerun()
         else:
             st.warning("⚠️ MISSING DATA: Please fill in Team Name, Player Names, and Contact Numbers.")    
     st.stop()
@@ -248,6 +290,7 @@ if not st.session_state.started:
 time_left = get_time_remaining()
 if time_left == 0 and st.session_state.stage != "finished":
     st.session_state.stage = "finished"
+    save_team_state()
     st.rerun()
 
 if st.session_state.stage != "finished":
@@ -318,6 +361,8 @@ if st.session_state.stage == "riddles":
                     st.session_state.stage = "retry_prompt_under_3"
                 else:
                     st.session_state.stage = "eliminated"
+            
+            save_team_state()
             st.rerun()
 
 # 2. DECISION: 5/5 CORRECT
@@ -327,10 +372,12 @@ elif st.session_state.stage == "decision_5":
     c1, c2 = st.columns(2)
     if c1.button("➡️ BYPASS TO NEXT SET"):
         st.session_state.stage = "set_complete"
+        save_team_state()
         st.rerun()
     if c2.button("🧩 DECODE BONUS PUZZLE"):
         s_state["puzzle_mandatory"] = False
         st.session_state.stage = "puzzle"
+        save_team_state()
         st.rerun()
 
 # 3. DECISION: 3 OR 4 CORRECT
@@ -344,11 +391,13 @@ elif st.session_state.stage == "decision_3_4":
         if c1.button(f"🔁 RECALIBRATE INCORRECT (Attempt {s_state['retry_count'] + 1})"):
             s_state["retry_count"] += 1
             st.session_state.stage = "riddles"
+            save_team_state()
             st.rerun()
     
     if c2.button("🧩 OVERRIDE FIREWALL VIA PUZZLE"):
         s_state["puzzle_mandatory"] = True
         st.session_state.stage = "puzzle"
+        save_team_state()
         st.rerun()
 
 # 4. PROMPT: UNDER 3 CORRECT
@@ -359,9 +408,10 @@ elif st.session_state.stage == "retry_prompt_under_3":
         s_state["retry_count"] += 1
         s_state["max_retries_allowed"] = 2
         st.session_state.stage = "riddles"
+        save_team_state()
         st.rerun()
 
-# 5. PUZZLE ROUND (WITH RETRY LOGIC)
+# 5. PUZZLE ROUND
 elif st.session_state.stage == "puzzle":
     st.subheader(f"🧩 Set {current_set['set_id']} Logic Gate")
     if s_state["puzzle_mandatory"]:
@@ -378,7 +428,6 @@ elif st.session_state.stage == "puzzle":
             st.success("✅ Firewall Bypassed Successfully!")
             st.session_state.score += 3
             st.session_state.stage = "set_complete"
-            st.rerun()
         else:
             if s_state["puzzle_retry_count"] < 1:
                 s_state["puzzle_retry_count"] += 1
@@ -390,7 +439,8 @@ elif st.session_state.stage == "puzzle":
                 else:
                     st.warning("❌ Process Terminated. Re-routing to next set.")
                     st.session_state.stage = "set_complete"
-                st.rerun()
+        save_team_state()
+        st.rerun()
 
 # 6. SET COMPLETE
 elif st.session_state.stage == "set_complete":
@@ -409,10 +459,12 @@ elif st.session_state.stage == "set_complete":
                 "puzzle_mandatory": False,
                 "puzzle_retry_count": 0
             }
+            save_team_state()
             st.rerun()
     else:
         if st.button("🔒 ACCESS THE MAINFRAME"):
             st.session_state.stage = "final_code_entry"
+            save_team_state()
             st.rerun()
 
 # 7. FINAL CODE ENTRY
@@ -429,6 +481,7 @@ elif st.session_state.stage == "final_code_entry":
         
         if user_clean == correct_master_code:
             st.session_state.stage = "finished"
+            save_team_state()
             st.rerun()
         else:
             st.error("❌ Authentication Failed. Check your keys and rewrite the sequence.")
@@ -438,6 +491,7 @@ elif st.session_state.stage == "eliminated":
     st.error("❌ MISSION FAILED: Your team has been locked out.")
     if st.button("UPLOAD PARTIAL LOGS"):
         st.session_state.stage = "finished"
+        save_team_state()
         st.rerun()
 
 # 9. FINISHED & SYNC
@@ -452,6 +506,7 @@ elif st.session_state.stage == "finished":
             saved = log_results_to_sheets()
             if saved:
                 st.session_state.submitted_to_sheet = True
+                save_team_state()
                 st.success("✅ Secure transmission verified. Handshake complete.")
             else:
                 st.info("Transmission complete. Cache saved locally.")
