@@ -146,11 +146,11 @@ SETS = [
         "set_id": 1,
         "secret_code": "TEN",
         "riddles": [
-            {"id": "r1", "prompt": "1. I have branches, but no fruit, trunk or leaves. What am I?", "accepted": ["bank", "a bank"]},
-            {"id": "r2", "prompt": "2. What has to be broken before you can use it?", "accepted": ["egg", "an egg"]},
-            {"id": "r3", "prompt": "3. I'm tall when I'm young, and I'm short when I'm old. What am I?", "accepted": ["candle", "a candle"]},
-            {"id": "r4", "prompt": "4. What month of the year has 28 days?", "accepted": ["all", "all of them", "every month"]},
-            {"id": "r5", "prompt": "5. What can you catch but not throw?", "accepted": ["cold", "a cold"]}
+            {"id": "r1", "prompt": "1.", "accepted": ["bank", "a bank"]},
+            {"id": "r2", "prompt": "2.", "accepted": ["egg", "an egg"]},
+            {"id": "r3", "prompt": "3.", "accepted": ["candle", "a candle"]},
+            {"id": "r4", "prompt": "4.", "accepted": ["all", "all of them", "every month"]},
+            {"id": "r5", "prompt": "5.", "accepted": ["cold", "a cold"]}
         ],
         "puzzle": {
             "prompt": "🧩 **SET 1 PUZZLE**:\nIf 1=3, 2=3, 3=5, 4=4, 5=4, what does 6 equal?",
@@ -161,11 +161,11 @@ SETS = [
         "set_id": 2,
         "secret_code": "YEAR",
         "riddles": [
-            {"id": "r1", "prompt": "1. What begins with an E and ends with an E but only has one letter?", "accepted": ["envelope", "an envelope"]},
-            {"id": "r2", "prompt": "2. What can travel around the world while staying in a corner?", "accepted": ["stamp", "a stamp"]},
-            {"id": "r3", "prompt": "3. The more of this there is, the less you see. What is it?", "accepted": ["darkness", "dark", "fog"]},
-            {"id": "r4", "prompt": "4. What has a head and a tail but no body?", "accepted": ["coin", "a coin"]},
-            {"id": "r5", "prompt": "5. Where does today come before yesterday?", "accepted": ["dictionary", "the dictionary"]}
+            {"id": "r1", "prompt": "1.", "accepted": ["envelope", "an envelope"]},
+            {"id": "r2", "prompt": "2.", "accepted": ["stamp", "a stamp"]},
+            {"id": "r3", "prompt": "3.", "accepted": ["darkness", "dark", "fog"]},
+            {"id": "r4", "prompt": "4.", "accepted": ["coin", "a coin"]},
+            {"id": "r5", "prompt": "5.", "accepted": ["dictionary", "the dictionary"]}
         ],
         "puzzle": {
             "prompt": "🧩 **SET 2 PUZZLE**:\nI add 5 to 9 and get 2. The answer is correct, but how?",
@@ -176,11 +176,11 @@ SETS = [
         "set_id": 3,
         "secret_code": "CYCLE",
         "riddles": [
-            {"id": "r1", "prompt": "1. What has many keys but can't open a single lock?", "accepted": ["piano", "a piano", "keyboard"]},
-            {"id": "r2", "prompt": "2. What is full of holes but still holds water?", "accepted": ["sponge", "a sponge"]},
-            {"id": "r3", "prompt": "3. What gets wet while drying?", "accepted": ["towel", "a towel"]},
-            {"id": "r4", "prompt": "4. What has a neck but no head?", "accepted": ["bottle", "a bottle", "shirt"]},
-            {"id": "r5", "prompt": "5. I am not alive, but I grow; I don't have lungs, but I need air. What am I?", "accepted": ["fire", "a fire"]}
+            {"id": "r1", "prompt": "1.", "accepted": ["piano", "zero", "0"]},
+            {"id": "r2", "prompt": "2.", "accepted": ["0", "zero"]},
+            {"id": "r3", "prompt": "3.", "accepted": ["2/3", "0.67"]},
+            {"id": "r4", "prompt": "4.", "accepted": ["0", "zero", "shirt"]},
+            {"id": "r5", "prompt": "5.", "accepted": ["twenty four", "24", "24W", "24w"]}
         ],
         "puzzle": {
             "prompt": "🧩 **SET 3 PUZZLE**:\nA sundial has the fewest moving parts of any timepiece. Which has the most?",
@@ -189,7 +189,7 @@ SETS = [
     }
 ]
 
-TOTAL_GAME_MINUTES = 40
+TOTAL_GAME_MINUTES = 30
 
 # ----------------- SESSION STATE INIT -----------------
 if "started" not in st.session_state:
@@ -262,7 +262,7 @@ def advance_to_next_set():
 if not st.session_state.started:
     st.title("🌐 NEON RIDDLE ARENA")
     draw_divider()
-    st.info("⏱️ **Mission:** 40 Minutes | 3 Nodes | 1 Device per Duo")
+    st.info("⏱️ **Mission:** 30 Minutes | 3 Nodes | 1 Device per Duo")
     
     t_name = st.text_input("Duo / Team Name:")
     col1, col2 = st.columns(2)
