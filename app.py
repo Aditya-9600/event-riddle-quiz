@@ -7,13 +7,13 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 # ----------------- CONFIGURATION & STYLING -----------------
-st.set_page_config(page_title="The Blackout Arena", page_icon="🌑", layout="centered")
+st.set_page_config(page_title="Neon Riddle Arena", page_icon="🎮", layout="centered")
 
 # Replace this with the App Script URL generated from your NEW spreadsheet!
-GOOGLE_WEBHOOK_URL = "https://script.google.com/u/0/home/projects/10RBi-7H6wZPGRTYNjvx4JiYG1jTvHMKGcV5ee14PtgwtQdXUWzvt6nPG/edit"
+GOOGLE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwLnXW4LZfjLfxiMA7RCnRxEikOlN6yiV12PXHN5w1y0Fk43AH8h0qOxlanVg2sJzzD/exec"
 
-# 🌑 "The Blackout" Emergency Power CSS Theme
-blackout_css = """
+# Vibrant Cyberpunk/Neon CSS with Embedded Background Image
+vibrant_css = """
     <style>
     /* Hide Default Streamlit Elements */
     #MainMenu {visibility: hidden;}
@@ -22,119 +22,99 @@ blackout_css = """
     [data-testid="stHeader"] {display: none !important;}
     [data-testid="stToolbar"] {display: none !important;}
 
-    /* Blackout Background */
+    /* Animated Tech Background (No download required) */
     .stApp {
-        background-color: #050505;
-        background-image: 
-            radial-gradient(circle at 50% 0%, #1a0000 0%, transparent 50%),
-            linear-gradient(rgba(255, 0, 0, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 0, 0, 0.03) 1px, transparent 1px);
-        background-size: 100% 100%, 30px 30px, 30px 30px;
-        color: #d3d3d3;
+        background: linear-gradient(rgba(5, 5, 15, 0.85), rgba(5, 5, 15, 0.85)),
+                    url("https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070") no-repeat center center fixed;
+        background-size: cover;
+        color: #e0f7fa;
         overflow-x: hidden;
     }
 
-    /* Glassmorphism / Dark Panels */
+    /* Glassmorphism Containers */
     .stForm, div[data-testid="stVerticalBlock"] > div {
-        background: rgba(15, 10, 10, 0.8) !important;
-        border: 1px solid rgba(255, 50, 50, 0.2);
-        border-radius: 8px;
-        padding: 15px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
-        backdrop-filter: blur(8px);
+        background: rgba(10, 10, 25, 0.6) !important;
+        border: 1px solid rgba(0, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 10px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
     }
 
-    /* Glitch Title Effect */
-    h1 {
-        color: #ffffff !important;
+    /* Vibrant Glowing Headers */
+    h1, h2, h3 {
+        background: -webkit-linear-gradient(45deg, #00ffff, #ff00ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         text-align: center;
-        text-transform: uppercase;
+        text-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
         font-weight: 900 !important;
-        letter-spacing: 4px;
-        text-shadow: 
-            0 0 5px #ff0000, 
-            -2px 0 2px #00ffff, 
-            2px 0 2px #ff00ff;
-        animation: glitch 3s infinite;
-    }
-    
-    h2, h3 {
-        color: #ff3333 !important;
-        text-align: center;
-        text-shadow: 0 0 10px rgba(255, 50, 50, 0.5);
     }
 
-    /* Dark Mode Text Inputs */
+    /* Neon Text Inputs */
     input {
-        border-radius: 4px !important;
-        border: 1px solid #4a0000 !important;
-        background-color: #000000 !important;
-        color: #ff5555 !important;
-        box-shadow: inset 0 0 8px rgba(255, 0, 0, 0.2) !important;
+        border-radius: 8px !important;
+        border: 1px solid #ff00ff !important;
+        background-color: rgba(0, 0, 0, 0.7) !important;
+        color: #00ffff !important;
+        box-shadow: 0 0 10px rgba(255, 0, 255, 0.2) !important;
         font-weight: bold !important;
         font-size: 1.1rem !important;
-        font-family: 'Courier New', monospace !important;
     }
     input:focus {
-        border: 1px solid #ff0000 !important;
-        box-shadow: 0 0 15px rgba(255, 0, 0, 0.6), inset 0 0 10px rgba(255, 0, 0, 0.3) !important;
+        border: 2px solid #00ffff !important;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.7) !important;
         outline: none !important;
     }
 
-    /* Emergency Override Buttons */
+    /* Vibrant Animated Pushbuttons */
     .stButton > button {
         width: 100%; 
-        border-radius: 4px; 
+        border-radius: 8px; 
         font-weight: 900;
-        letter-spacing: 2px;
-        background: linear-gradient(45deg, #1a0000, #4d0000) !important;
-        color: #ff6666 !important;
-        border: 1px solid #ff0000 !important;
-        box-shadow: 0 0 10px rgba(255, 0, 0, 0.3) !important;
-        transition: all 0.2s ease-in-out !important;
-        text-transform: uppercase;
+        letter-spacing: 1px;
+        background: linear-gradient(45deg, #090979, #9400d3) !important;
+        color: #00ffff !important;
+        border: 2px solid #00ffff !important;
+        box-shadow: 0 0 15px rgba(148, 0, 211, 0.5) !important;
+        transition: all 0.3s ease-in-out !important;
     }
     .stButton > button:hover {
-        background: linear-gradient(45deg, #4d0000, #990000) !important;
+        background: linear-gradient(45deg, #9400d3, #ff00ff) !important;
         color: #ffffff !important;
-        border: 1px solid #ffffff !important;
-        box-shadow: 0 0 25px #ff0000, inset 0 0 10px #ff6666 !important;
-        transform: scale(1.02);
+        border: 2px solid #ff00ff !important;
+        box-shadow: 0 0 30px #ff00ff, inset 0 0 10px #00ffff !important;
+        transform: translateY(-2px);
     }
 
-    /* Alerts */
+    /* Success / Warning Alerts Customization */
     [data-testid="stAlert"] {
-        background: rgba(20, 0, 0, 0.9) !important;
-        border-left: 4px solid #ff0000 !important;
-        color: #ffcccc !important;
+        background: rgba(0, 0, 0, 0.8) !important;
+        border-left: 4px solid #00ffff !important;
+        color: #fff !important;
     }
 
-    /* Emergency Scanner Line */
-    .scanner-line {
-        height: 2px;
+    /* Energy Divider */
+    .energy-divider {
+        height: 3px;
         width: 100%;
-        background: linear-gradient(90deg, transparent, #ff0000, transparent);
-        box-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000;
+        background: linear-gradient(90deg, transparent, #00ffff, #ff00ff, #00ffff, transparent);
+        box-shadow: 0 0 15px #ff00ff;
         margin: 20px 0;
-        animation: scan 2.5s infinite linear;
+        animation: pulse-line 2s infinite;
     }
 
-    @keyframes scan {
-        0% { opacity: 0.2; transform: scaleX(0.8); }
-        50% { opacity: 1; transform: scaleX(1); }
-        100% { opacity: 0.2; transform: scaleX(0.8); }
-    }
-    
-    @keyframes glitch {
-        0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 5px #ff0000, -2px 0 2px #00ffff, 2px 0 2px #ff00ff; opacity: 1; }
-        20%, 24%, 55% { text-shadow: none; opacity: 0.5; }
+    @keyframes pulse-line {
+        0% { opacity: 0.5; }
+        50% { opacity: 1; filter: brightness(1.5); }
+        100% { opacity: 0.5; }
     }
     </style>
 """
-st.markdown(blackout_css, unsafe_allow_html=True)
+st.markdown(vibrant_css, unsafe_allow_html=True)
 
 def draw_divider():
-    st.markdown('<div class="scanner-line"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="energy-divider"></div>', unsafe_allow_html=True)
 
 # ----------------- SERVER MEMORY FOR REFRESH RESCUE -----------------
 @st.cache_resource
@@ -145,7 +125,7 @@ server_memory = get_server_memory()
 
 def save_team_state():
     if st.session_state.started:
-        # Team key is now based on Team Name and Player 1 Name since contact numbers are gone
+        # Team key is based on Team Name and Player 1 Name since contact numbers are removed
         team_key = f"{st.session_state.team_name.strip().lower()}_{st.session_state.p1_name.strip().lower()}"
         server_memory[team_key] = {
             "team_name": st.session_state.team_name,
@@ -208,7 +188,7 @@ SETS = [
     }
 ]
 
-TOTAL_GAME_MINUTES = 40
+TOTAL_GAME_MINUTES = 30
 
 # ----------------- SESSION STATE INIT -----------------
 if "total_score" not in st.session_state:
@@ -240,9 +220,9 @@ def log_results_to_sheets():
         "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "Team_Name": st.session_state.team_name,
         "Player_1": st.session_state.p1_name,
-        "P1_Contact": "N/A",  # Sending N/A to prevent Google Sheets from breaking
+        "P1_Contact": "N/A",  # Required to prevent Google Sheets webhook from breaking
         "Player_2": st.session_state.p2_name,
-        "P2_Contact": "N/A",  # Sending N/A to prevent Google Sheets from breaking
+        "P2_Contact": "N/A",  # Required to prevent Google Sheets webhook from breaking
         "Final_Score": st.session_state.total_score,
         "Time_Taken_Sec": int(time.time() - st.session_state.start_time)
        }
@@ -279,9 +259,9 @@ def advance_to_next_set():
 
 # ----------------- UI SCREEN: REGISTRATION & RECOVERY -----------------
 if not st.session_state.started:
-    st.markdown("<h1>THE BLACKOUT</h1>", unsafe_allow_html=True)
+    st.markdown("<h1>NEON RIDDLE ARENA</h1>", unsafe_allow_html=True)
     draw_divider()
-    st.info("⚠️ **SYSTEM ALERT:** 40 Minutes Remaining | 3 Nodes | 1 Device per Duo")
+    st.info("⏱️ **Mission:** 30 Minutes | 3 Nodes | 1 Device per Duo")
     
     t_name = st.text_input("Duo / Team Name:")
     col1, col2 = st.columns(2)
@@ -291,7 +271,7 @@ if not st.session_state.started:
     with col2:
         p2 = st.text_input("Player 2 Name:")
 
-    if st.button("🔴 OVERRIDE & INITIATE"):
+    if st.button("🚀 INITIATE SEQUENCE"):
         if t_name.strip() and p1.strip() and p2.strip():
             team_key = f"{t_name.strip().lower()}_{p1.strip().lower()}"
             if team_key in server_memory:
@@ -309,7 +289,7 @@ if not st.session_state.started:
                 save_team_state()
                 st.rerun()
         else:
-            st.warning("⚠️ ACCESS DENIED: Fill all identity credentials.")    
+            st.warning("⚠️ Access Denied: Fill all credentials.")    
     st.stop()
 
 # ----------------- LIVE JAVASCRIPT TIMER -----------------
@@ -322,8 +302,8 @@ if time_left == 0 and st.session_state.stage != "finished":
 if st.session_state.stage != "finished":
     end_time_ms = (st.session_state.start_time + (TOTAL_GAME_MINUTES * 60)) * 1000
     live_timer_html = f"""
-    <div style="background: rgba(20, 0, 0, 0.9); color: #ff3333; padding: 15px; border: 2px solid #ff0000; border-radius: 4px; text-align: center; font-size: 2.5rem; font-weight: 900; font-family: 'Courier New', monospace; box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); margin-bottom: 5px; text-shadow: 0 0 10px #ff0000;">
-        ⏳ <span id="clock">--:--</span>
+    <div style="background: rgba(0, 0, 0, 0.8); color: #00ffff; padding: 15px; border: 2px solid #ff00ff; border-radius: 8px; text-align: center; font-size: 2.5rem; font-weight: 900; font-family: 'Courier New', monospace; box-shadow: 0 0 25px rgba(0, 255, 255, 0.4); margin-bottom: 5px;">
+        ⏱️ <span id="clock">--:--</span>
     </div>
     <script>
         var countDownDate = {end_time_ms};
@@ -332,7 +312,8 @@ if st.session_state.stage != "finished":
             var distance = countDownDate - now;
             if (distance < 0) {{
                 clearInterval(x);
-                document.getElementById("clock").innerHTML = "SYSTEM FAILURE";
+                document.getElementById("clock").innerHTML = "TIME UP";
+                document.getElementById("clock").style.color = "#ff0000";
             }} else {{
                 var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -343,7 +324,7 @@ if st.session_state.stage != "finished":
     </script>
     """
     components.html(live_timer_html, height=110)
-    st.caption(f"📡 Connection Established: **{st.session_state.team_name}**")
+    st.caption(f"🛡️ Connected: **{st.session_state.team_name}**")
     draw_divider()
 
 # ----------------- GAME LOOP -----------------
@@ -363,7 +344,7 @@ if st.session_state.stage == "riddles":
             else:
                 inputs[r["id"]] = st.text_input(r["prompt"], key=f"inp_{r['id']}")
         
-        if st.form_submit_button("💥 TRANSMIT CODES 💥"):
+        if st.form_submit_button("💥 SUBMIT ANSWERS 💥"):
             for r in current_set["riddles"]:
                 r_id = r["id"]
                 if not s_state["riddle_status"].get(r_id, False):
@@ -390,8 +371,8 @@ if st.session_state.stage == "riddles":
 
 # STAGE 2A: EVALUATE 5/5
 elif st.session_state.stage == "eval_5":
-    st.success("🌟 FLAWLESS OVERRIDE! 5/5 Correct. You bypassed the puzzle and secured 7 Points!")
-    if st.button("PROCEED TO EXTRACT DATA"):
+    st.success("🌟 FLAWLESS! 5/5 Correct. You bypassed the puzzle and earned a massive 7 Points!")
+    if st.button("Proceed to Output Data"):
         st.session_state.stage = "show_secret_code"
         save_team_state()
         st.rerun()
@@ -399,37 +380,37 @@ elif st.session_state.stage == "eval_5":
 # STAGE 2B: EVALUATE 3 OR 4
 elif st.session_state.stage == "eval_3_4":
     cr = sum(1 for v in s_state["riddle_status"].values() if v)
-    st.warning(f"⚠️ {cr}/5 Correct. Minimum power threshold met.")
+    st.warning(f"⚠️ {cr}/5 Correct. Minimum threshold met.")
     
     can_retry = not s_state["retry_used"]
     
     if can_retry:
         c1, c2, c3 = st.columns(3)
         with c1:
-            if st.button("🔁 RETRY INCORRECT"):
+            if st.button("🔁 Retry Incorrect"):
                 s_state["retry_used"] = True
                 st.session_state.stage = "riddles"
                 save_team_state()
                 st.rerun()
         with c2:
-            if st.button("🧩 UNLOCK PUZZLE"):
+            if st.button("🧩 Unlock Puzzle"):
                 st.session_state.stage = "puzzle"
                 save_team_state()
                 st.rerun()
         with c3:
-            if st.button("⏭️ SKIP & NEXT SET"):
+            if st.button("⏭️ Skip & Next Set"):
                 st.session_state.stage = "show_secret_code"
                 save_team_state()
                 st.rerun()
     else:
         c1, c2 = st.columns(2)
         with c1:
-            if st.button("🧩 UNLOCK PUZZLE"):
+            if st.button("🧩 Unlock Puzzle"):
                 st.session_state.stage = "puzzle"
                 save_team_state()
                 st.rerun()
         with c2:
-            if st.button("⏭️ SKIP & NEXT SET"):
+            if st.button("⏭️ Skip & Next Set"):
                 st.session_state.stage = "show_secret_code"
                 save_team_state()
                 st.rerun()
@@ -437,9 +418,9 @@ elif st.session_state.stage == "eval_3_4":
 # STAGE 2C: EVALUATE UNDER 3
 elif st.session_state.stage == "eval_under_3":
     cr = sum(1 for v in s_state["riddle_status"].values() if v)
-    st.error(f"📉 POWER LOST. Only {cr}/5 correct. You need at least 3 to survive.")
+    st.error(f"📉 Signal Lost. Only {cr}/5 correct. You need at least 3 to survive.")
     
-    if st.button("🔁 INITIATE EMERGENCY RETRY"):
+    if st.button("🔁 RETRY INCORRECT RIDDLES"):
         s_state["retry_used"] = True
         st.session_state.stage = "riddles"
         save_team_state()
@@ -447,16 +428,16 @@ elif st.session_state.stage == "eval_under_3":
 
 # STAGE 3: PUZZLE
 elif st.session_state.stage == "puzzle":
-    st.subheader(f"🧩 Set {current_set['set_id']} Master Firewall")
-    st.info("⚠️ WARNING: No retries allowed. One attempt only.")
+    st.subheader(f"🧩 Set {current_set['set_id']} Master Puzzle")
+    st.info("⚠️ No retries allowed. Answer carefully.")
         
     st.markdown(current_set["puzzle"]["prompt"])
-    p_ans = st.text_input("Enter Override Code:")
+    p_ans = st.text_input("Enter Execution Code:")
     
-    if st.button("💥 EXECUTE OVERRIDE 💥"):
+    if st.button("💥 EXECUTE PUZZLE 💥"):
         clean_p = p_ans.strip().lower()
         if clean_p in [a.lower() for a in current_set["puzzle"]["accepted"]]:
-            st.success("✅ Firewall Bypassed! +2 Points")
+            st.success("✅ Firewall Bypassed Successfully! +2 Points")
             s_state["puzzle_solved"] = True
         else:
             st.error("❌ Invalid Syntax. Puzzle Failed.")
@@ -469,19 +450,20 @@ elif st.session_state.stage == "puzzle":
 
 # STAGE 4: SHOW SECRET CODE
 elif st.session_state.stage == "show_secret_code":
+    st.balloons()
     st.success(f"⚡ **Grid {current_set['set_id']} Synchronized!**")
     
     st.markdown(
-        f"""<div style='text-align:center; padding:20px; border:2px solid #ff0000; background:rgba(20,0,0,0.8); border-radius:4px; box-shadow: 0 0 15px #ff0000;'>
-        <h3 style='margin:0; color:#fff;'>ENCRYPTED KEY EXTRACTED:</h3>
-        <h1 style='margin:0; font-size:4rem; color:#ff3333; text-shadow:0 0 20px #ff0000;'>{current_set['secret_code']}</h1>
-        <p style='margin:0; color:#aaa;'>Memorize or write this down immediately.</p>
+        f"""<div style='text-align:center; padding:20px; border:2px dashed #00ffff; background:rgba(0,0,0,0.5); border-radius:10px;'>
+        <h3 style='margin:0; color:#fff;'>SECRET CODE EXTRACTED:</h3>
+        <h1 style='margin:0; font-size:4rem; color:#ff00ff; text-shadow:0 0 20px #00ffff;'>{current_set['secret_code']}</h1>
+        <p style='margin:0; color:#aaa;'>Write this down immediately.</p>
         </div><br>""", 
         unsafe_allow_html=True
     )
     
     if st.session_state.current_set_idx + 1 < len(SETS):
-        if st.button("🚀 ADVANCE TO NEXT SECTOR"):
+        if st.button("🚀 ADVANCE TO NEXT SET"):
             advance_to_next_set()
             st.rerun()
     else:
@@ -493,11 +475,11 @@ elif st.session_state.stage == "show_secret_code":
 elif st.session_state.stage == "final_code_entry":
     st.subheader("🗝️ The Master Override")
     draw_divider()
-    st.info("Assemble all 3 encrypted keys sequentially to upload your final score and restore power.")
+    st.info("Assemble all 3 encrypted keys sequentially to upload your final score.")
     
     master_input = st.text_input("Enter the Combined Override Code:")
     
-    if st.button("💥 TRANSMIT FINAL LOG 💥"):
+    if st.button("💥 TRANSMIT FINAL DATA LOG 💥"):
         correct_master_code = "".join([s["secret_code"].lower() for s in SETS])
         user_clean = master_input.strip().replace(" ", "").lower()
         
@@ -510,8 +492,8 @@ elif st.session_state.stage == "final_code_entry":
 
 # STAGE 6: ELIMINATED
 elif st.session_state.stage == "eliminated":
-    st.error("❌ BLACKOUT COMPLETE: Your team failed to meet the minimum threshold. You have been eliminated.")
-    if st.button("UPLOAD PARTIAL TELEMETRY"):
+    st.error("❌ FATAL ERROR: Your team failed to meet the minimum threshold. You have been eliminated.")
+    if st.button("UPLOAD PARTIAL LOGS"):
         st.session_state.stage = "finished"
         save_team_state()
         st.rerun()
@@ -528,6 +510,6 @@ elif st.session_state.stage == "finished":
             if saved:
                 st.session_state.submitted_to_sheet = True
                 save_team_state()
-                st.success("✅ Secure transmission verified. Disconnecting...")
+                st.success("✅ Secure transmission verified. Handshake complete.")
             else:
                 st.info("Transmission failed. Cache saved locally.")
