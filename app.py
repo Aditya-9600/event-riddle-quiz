@@ -259,7 +259,7 @@ def advance_to_next_set():
 
 # ----------------- UI SCREEN: REGISTRATION & RECOVERY -----------------
 if not st.session_state.started:
-    st.markdown("<h1>NEON RIDDLE ARENA</h1>", unsafe_allow_html=True)
+    st.markdown("<h1>BLACK OUT</h1>", unsafe_allow_html=True)
     draw_divider()
     st.info("⏱️ **Mission:** 30 Minutes | 3 Nodes | 1 Device per Duo")
     
