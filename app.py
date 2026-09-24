@@ -7,7 +7,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 # ----------------- CONFIGURATION & STYLING -----------------
-st.set_page_config(page_title="Neon Riddle Arena", page_icon="🎮", layout="centered")
+st.set_page_config(page_title="Black Out", page_icon="🎮", layout="centered")
 
 # Replace this with the App Script URL generated from your NEW spreadsheet!
 GOOGLE_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwLnXW4LZfjLfxiMA7RCnRxEikOlN6yiV12PXHN5w1y0Fk43AH8h0qOxlanVg2sJzzD/exec"
