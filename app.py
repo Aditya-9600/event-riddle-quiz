@@ -130,8 +130,6 @@ def save_team_state():
             "team_name": st.session_state.team_name,
             "p1_name": st.session_state.p1_name,
             "p2_name": st.session_state.p2_name,
-            "p1_contact": st.session_state.p1_contact,
-            "p2_contact": st.session_state.p2_contact,
             "start_time": st.session_state.start_time,
             "current_set_idx": st.session_state.current_set_idx,
             "stage": st.session_state.stage,
@@ -197,8 +195,6 @@ if "started" not in st.session_state:
     st.session_state.team_name = ""
     st.session_state.p1_name = ""
     st.session_state.p2_name = ""
-    st.session_state.p1_contact = ""
-    st.session_state.p2_contact = ""
     st.session_state.start_time = 0
     st.session_state.current_set_idx = 0
     st.session_state.stage = "riddles"
@@ -221,9 +217,7 @@ def log_results_to_sheets():
         "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "Team_Name": st.session_state.team_name,
         "Player_1": st.session_state.p1_name,
-        "P1_Contact": st.session_state.p1_contact, 
         "Player_2": st.session_state.p2_name,
-        "P2_Contact": st.session_state.p2_contact, 
         "Final_Score": st.session_state.total_score,
         "Time_Taken_Sec": int(time.time() - st.session_state.start_time)
        }
@@ -269,11 +263,9 @@ if not st.session_state.started:
     
     with col1:
         p1 = st.text_input("Player 1 Name:")
-        p1_contact = st.text_input("Player 1 Contact Number:")
         
     with col2:
         p2 = st.text_input("Player 2 Name:")
-        p2_contact = st.text_input("Player 2 Contact Number:")
 
     if st.button("🚀 INITIATE SEQUENCE"):
         if t_name.strip() and p1.strip() and p2.strip() and p1_contact.strip() and p2_contact.strip():
@@ -287,9 +279,7 @@ if not st.session_state.started:
             else:
                 st.session_state.team_name = t_name.strip()
                 st.session_state.p1_name = p1.strip()
-                st.session_state.p1_contact = p1_contact.strip()
                 st.session_state.p2_name = p2.strip()
-                st.session_state.p2_contact = p2_contact.strip()
                 st.session_state.start_time = time.time()
                 st.session_state.started = True
                 save_team_state()
